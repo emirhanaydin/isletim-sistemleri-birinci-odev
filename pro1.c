@@ -6,33 +6,31 @@ int main(int argc, char **argv) {
     pid_t pid;
 
     int n;
-    printf("0'dan n'e kadar olan cift sayilarin toplami icin n degerini giriniz: ");
+    printf("[EBEVEYN] 0'dan n'e kadar olan cift sayilarin toplami icin n degeri: ");
     scanf("%d", &n);
 
-    char c[11];
+    char sayi[11]; // int veri tipinin alabileceği maksimum değer 10 basamaklı olduğundan fazlası yok sayılır.
     int i, j = n, adet = 0;
     for (i = 0; i < 10 && j > 0; i++) { // Ardışık 10'a modüler ve standart bölme işlemleriyle sayı diziye aktarılır.
-        c[i] = j % 10 + '0'; // Birler basamağındaki rakam alınır.
+        sayi[i] = j % 10 + '0'; // Birler basamağındaki rakam alınır.
         j /= 10; // Sayı sağdan bir basamak eksiltilir.
         adet++;
     }
+    sayi[adet] = '\0';
 
-    c[adet] = '\0';
-    char gec;
+    char gecici;
     j = adet / 2;
     for (i = 0; i < j; i++) { // Sayı diziye sağdan sola doğru atandığı için terslenerek gerçek haline döndürülür.
-        gec = c[i];
-        c[i] = c[adet - 1 - i];
-        c[adet - 1 - i] = gec;
+        gecici = sayi[i];
+        sayi[i] = sayi[adet - 1 - i];
+        sayi[adet - 1 - i] = gecici;
     }
 
     pid = fork(); // Çatallama işlemi yapılır ve oluşan çocuk işlemin pid'i değişkene atanır.
-    int execDonus;
     if (pid == 0) // Çatallama başarılı
     {
-        char* cptr = c;
-        char** cpptr = &cptr; // execv parametre olarak iki katlı gösterici istediği için tanımlanmıştır.
-        execDonus = execl("./harici", c, NULL);
+        execl("./harici", sayi, (char *) 0);
+        printf("[YAVRU] Islem tamamlandi.\n");
     } else if (pid < 0) // Çatallama başarısız
     {
         printf("fork() basarisiz!\n");
@@ -45,7 +43,7 @@ int main(int argc, char **argv) {
 
         if (donusDurumu == 0) // Çocuk işlem hatasız bir şekilde sonlandıysa.
         {
-
+            printf("[EBEVEYN] Yavru islem tamamlandi, program sonlandiriliyor.\n");
         } else // Hata koduyla sonlanmışsa
         {
             printf("Cocuk islem bir hata ile sonlandirildi! (%d)\n", donusDurumu);

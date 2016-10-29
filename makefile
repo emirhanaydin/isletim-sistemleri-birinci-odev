@@ -6,3 +6,7 @@ derle:
 
 calistir:
 	./pro1
+
+temizle:
+	rm harici
+	rm pro1
