@@ -1,9 +1,8 @@
 basla: derle calistir
 
 derle:
-	gcc pro1.c -o pro1
 	gcc harici.c -o harici
+	gcc pro1.c -o pro1
 
 calistir:
 	./pro1
-	./harici

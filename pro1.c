@@ -9,10 +9,30 @@ int main(int argc, char **argv) {
     printf("0'dan n'e kadar olan cift sayilarin toplami icin n degerini giriniz: ");
     scanf("%d", &n);
 
+    char c[11];
+    int i, j = n, adet = 0;
+    for (i = 0; i < 10 && j > 0; i++) { // Ardışık 10'a modüler ve standart bölme işlemleriyle sayı diziye aktarılır.
+        c[i] = j % 10 + '0'; // Birler basamağındaki rakam alınır.
+        j /= 10; // Sayı sağdan bir basamak eksiltilir.
+        adet++;
+    }
+
+    c[adet] = '\0';
+    char gec;
+    j = adet / 2;
+    for (i = 0; i < j; i++) { // Sayı diziye sağdan sola doğru atandığı için terslenerek gerçek haline döndürülür.
+        gec = c[i];
+        c[i] = c[adet - 1 - i];
+        c[adet - 1 - i] = gec;
+    }
+
     pid = fork(); // Çatallama işlemi yapılır ve oluşan çocuk işlemin pid'i değişkene atanır.
+    int execDonus;
     if (pid == 0) // Çatallama başarılı
     {
-
+        char* cptr = c;
+        char** cpptr = &cptr; // execv parametre olarak iki katlı gösterici istediği için tanımlanmıştır.
+        execDonus = execl("./harici", c, NULL);
     } else if (pid < 0) // Çatallama başarısız
     {
         printf("fork() basarisiz!\n");
@@ -28,7 +48,7 @@ int main(int argc, char **argv) {
 
         } else // Hata koduyla sonlanmışsa
         {
-            printf("Cocuk islem bir hata ile sonlandirildi!\n");
+            printf("Cocuk islem bir hata ile sonlandirildi! (%d)\n", donusDurumu);
         }
     }
 
