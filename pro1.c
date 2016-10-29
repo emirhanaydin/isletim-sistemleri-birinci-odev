@@ -1,5 +1,6 @@
 #include <stdio.h>
-#include <unistd.h>
+#include <unistd.h> // fork()
+#include <sys/wait.h> // wait()
 
 int main(int argc, char **argv) {
     pid_t pid;
