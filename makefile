@@ -8,5 +8,5 @@ calistir:
 	./pro1
 
 temizle:
-	rm harici
-	rm pro1
+	rm -f harici
+	rm -f pro1
